@@ -1,0 +1,8 @@
+__pycache__
+*.pyc
+*.pyo
+./slicerangetools.egg-info
+./build
+./dist
+./.eggs
+

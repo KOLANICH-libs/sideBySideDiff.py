@@ -1,0 +1,49 @@
+image: registry.gitlab.com/kolanich-subgroups/docker-images/fixed_python:latest
+stages:
+  - build
+  - test
+
+variables:
+  DOCKER_DRIVER: overlay2
+  SAST_ANALYZER_IMAGE_TAG: latest
+  SAST_DISABLE_DIND: "true"
+
+include:
+  - template: SAST.gitlab-ci.yml
+  #- template: DAST.gitlab-ci.yml
+  #- template: License-Management.gitlab-ci.yml
+  #- template: Container-Scanning.gitlab-ci.yml
+  #- template: Dependency-Scanning.gitlab-ci.yml
+  - template: Code-Quality.gitlab-ci.yml
+
+
+build:
+  tags:
+    - shared
+  stage: build
+  variables:
+    GIT_DEPTH: "1"
+    PYTHONUSERBASE: ${CI_PROJECT_DIR}/python_user_packages
+
+  before_script:
+    - export PATH="$PATH:$PYTHONUSERBASE/bin" # don't move into `variables`
+
+  cache:
+    paths:
+      - $PYTHONUSERBASE
+
+  script:
+    - python3 setup.py bdist_wheel
+    - mkdir wheels
+    - mv ./dist/*.whl ./wheels/sideBySideDiff-0.CI-py3-none-any.whl
+    - pip3 install --user --upgrade ./wheels/sideBySideDiff-0.CI-py3-none-any.whl
+    #- coverage run --source=sideBySideDiff -m pytest --junitxml=./rspec.xml ./tests/tests.py
+    #- coverage report -m || true
+    #- coveralls || true
+    #- codecov || true
+
+  artifacts:
+    paths:
+      - wheels
+    #reports:
+    #  junit: rspec.xml

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.2.0", "wheel", "setuptools_scm[toml]>=3.4.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sideBySideDiff"
+authors = [{name = "KOLANICH"}]
+description = "A library to create 2-way side-by-side diffs for showing them in console"
+readme = "ReadMe.md"
+keywords = ["diff", "2-way-diff", "compare", "ANSI color codes", "ECMA-45"]
+license = {text = "Unlicense"}
+classifiers = [
+	"Programming Language :: Python",
+	"Programming Language :: Python :: 3",
+	"Development Status :: 4 - Beta",
+	"Environment :: Other Environment",
+	"Intended Audience :: Developers",
+	"License :: Public Domain",
+	"Operating System :: OS Independent",
+	"Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.4"
+dependencies = [
+	"RichConsole", # @ git+https://codeberg.org/KOLANICH-libs/RichConsole.py.git"
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://codeberg.org/KOLANICH-libs/sideBySideDiff.py"
+
+[tool.setuptools]
+zip-safe = true
+py-modules = ["sideBySideDiff"]
+
+[tool.setuptools_scm]
